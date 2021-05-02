@@ -1,13 +1,19 @@
 public class Main {
     public static void main(String[] args) {
-        ChainHashMap hashMap = new ChainHashMap(4);
-        hashMap.add("Joao", "doce");
-        hashMap.add("Thamires", "Morango");
-        hashMap.add("a", "Morango");
-        System.out.println(hashMap.size());
-        System.out.println(hashMap.remove("Joao"));
-        System.out.println(hashMap.remove("Thamires"));
-        System.out.println(hashMap.size());
-        System.out.println(hashMap.isEmpty());
+        ChainHashMap hashMap = new ChainHashMap(10000);
+        ChainHashMap hashMap2 = new ChainHashMap(100);
+
+        for (int i = 0; i < 1000000; i += 2) {
+            String[] pares = { "" + i, "" + (i + 1) };
+            hashMap.add(pares[0], pares[1]);
+        }
+
+        for (int i = 0; i < 1000000; i += 2) {
+            String[] pares = { "" + i, "" + (i + 1) };
+            hashMap2.add(pares[0], pares[1]);
+        }
+
+        System.out.println(hashMap.getLoadFactor());
+        System.out.println(hashMap2.getLoadFactor());
     }
 }
