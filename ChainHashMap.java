@@ -13,29 +13,68 @@ class Node {
 
 public class ChainHashMap extends AbstractMap {
     private ArrayList<Node> buckets;
+    private int capacity;
     private int size;
 
-    public ChainHashMap(int size) {
-        this.size = size;
-        initializeBuckets();
-    }
-
-    private void initializeBuckets() {
-        buckets = new ArrayList<Node>(this.size);
-        for (int i = 0; i < this.size; i++) {
-            buckets.add(null);
-        }
+    public ChainHashMap(int capacity) {
+        buckets = new ArrayList<Node>(capacity);
+        this.capacity = capacity;
+        this.size = 0;
     }
 
     private int compress(long hash) {
         return (int) (hash % this.size);
     }
 
+    public Double getLoadFactor() {
+        return (double) this.size / (double) this.capacity;
+    }
+
+    private Node getHead(String key) {
+        int index = getIndex(key);
+        return buckets.get(index);
+    }
+
     private int getIndex(String key) {
         int hash = key.hashCode();
         int index = compress(hash);
-
         return index < 0 ? index * -1 : index;
+    }
+
+    public void add(String key, String value) {
+        Node head = getHead(key);
+        while (head != null) {
+            if (head.key.equals(key)) {
+                head.value = value;
+                return;
+            }
+            head = head.next;
+        }
+
+        head = getHead(key);
+        int indexInList = getIndex(key);
+        Node newValue = new Node(key, value);
+        newValue.next = head;
+        buckets.set(indexInList, newValue);
+
+        size++;
+
+        if (getLoadFactor() >= 0.75) {
+            doubleCapacity();
+        }
+    }
+
+    private void doubleCapacity() {
+        ArrayList<Node> tempList = buckets;
+        capacity *= 2;
+        buckets = new ArrayList<Node>(this.capacity);
+
+        for (Node item : tempList) {
+            while (item != null) {
+                add(item.key, item.value);
+                item = item.next;
+            }
+        }
     }
 
     @Override
@@ -45,8 +84,7 @@ public class ChainHashMap extends AbstractMap {
 
     @Override
     public String get(String key) {
-        int index = getIndex(key);
-        Node head = buckets.get(index);
+        Node head = getHead(key);
         while (head != null) {
             if (head.key.equals(key)) {
                 return head.value;
@@ -59,8 +97,7 @@ public class ChainHashMap extends AbstractMap {
 
     @Override
     public String put(String key, String value) {
-        int index = getIndex(key);
-        Node head = buckets.get(index);
+        Node head = getHead(key);
         while (head != null) {
             if (head.key.equals(key)) {
                 String lastValue = head.value;
@@ -75,6 +112,24 @@ public class ChainHashMap extends AbstractMap {
 
     @Override
     public String remove(String key) {
+        int index = getIndex(key);
+        Node head = getHead(key);
+        Node prev = null;
+
+        while (head != null) {
+            if (head.key.equals(key)) {
+                size--;
+                if (prev != null) {
+                    prev.next = head.next;
+                } else {
+                    buckets.set(index, head.next);
+                }
+                return head.value;
+            }
+            prev = head;
+            head = head.next;
+        }
+
         return null;
     }
 
