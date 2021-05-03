@@ -5,12 +5,12 @@ public class Main {
 
         for (int i = 0; i < 1000000; i += 2) {
             String[] pares = { "a" + i, "" + (i + 1) };
-            chainHashMap.add(pares[0], pares[1]);
+            chainHashMap.put(pares[0], pares[1]);
         }
 
         for (int i = 0; i < 1000000; i += 2) {
             String[] pares = { "b" + i, "" + (i + 1) };
-            chainHashMap2.add(pares[0], pares[1]);
+            chainHashMap2.put(pares[0], pares[1]);
         }
 
         System.out.println(chainHashMap.getLoadFactor());
