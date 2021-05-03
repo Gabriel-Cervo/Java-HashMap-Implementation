@@ -4,12 +4,12 @@ public class Main {
         ChainHashMap hashMap2 = new ChainHashMap(100);
 
         for (int i = 0; i < 1000000; i += 2) {
-            String[] pares = { "" + i, "" + (i + 1) };
+            String[] pares = { "a" + i, "" + (i + 1) };
             hashMap.add(pares[0], pares[1]);
         }
 
         for (int i = 0; i < 1000000; i += 2) {
-            String[] pares = { "" + i, "" + (i + 1) };
+            String[] pares = { "b" + i, "" + (i + 1) };
             hashMap2.add(pares[0], pares[1]);
         }
 

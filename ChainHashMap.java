@@ -16,6 +16,11 @@ public class ChainHashMap extends AbstractMap {
     private int capacity;
     private int size;
 
+    public ChainHashMap() {
+        this.capacity = 10;
+        initializeBuckets();
+    }
+
     public ChainHashMap(int capacity) {
         this.capacity = capacity;
         initializeBuckets();
@@ -27,10 +32,6 @@ public class ChainHashMap extends AbstractMap {
         for (int i = 0; i < capacity; i++) {
             buckets.add(null);
         }
-    }
-
-    private int compress(long hash) {
-        return (int) (hash % this.capacity);
     }
 
     public Double getLoadFactor() {
@@ -46,6 +47,10 @@ public class ChainHashMap extends AbstractMap {
         int hash = key.hashCode();
         int index = compress(hash);
         return index < 0 ? index * -1 : index;
+    }
+
+    private int compress(long hash) {
+        return (int) (hash % this.capacity);
     }
 
     public void add(String key, String value) {
