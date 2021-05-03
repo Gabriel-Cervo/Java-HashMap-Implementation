@@ -146,17 +146,44 @@ public class ChainHashMap extends AbstractMap {
 
     @Override
     public Iterable<String> keySet() {
-        return null;
+        ArrayList<String> keys = new ArrayList<String>();
+        for (Node item : buckets) {
+            while (item != null) {
+                keys.add(item.key);
+                item = item.next;
+            }
+        }
+
+        return keys;
     }
 
     @Override
     public Iterable<String> values() {
-        return null;
+        ArrayList<String> keys = new ArrayList<String>();
+        for (Node item : buckets) {
+            while (item != null) {
+                keys.add(item.value);
+                item = item.next;
+            }
+        }
+
+        return keys;
     }
 
     @Override
     public Iterable<Entry<String, String>> entrySet() {
-        return null;
+        ArrayList<Entry<String, String>> keys = null;
+
+        // for (Node item : buckets) {
+        // Entry<String, String> entry = new Entry<String, String>(item.key,
+        // item.value);
+        // while (item != null) {
+        // keys.add(item.key, item.value);
+        // item = item.next;
+        // }
+        // }
+
+        return keys;
     }
 
 }
